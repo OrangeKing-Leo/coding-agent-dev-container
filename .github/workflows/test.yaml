@@ -1,0 +1,58 @@
+name: "CI - Test Templates"
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        template:
+          - claude-code-sandbox
+          - codex-sandbox
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: "Install latest devcontainer CLI"
+        run: npm install -g @devcontainers/cli
+
+      - name: "Stage template ${{ matrix.template }}"
+        run: |
+          set -euo pipefail
+          WORK="$RUNNER_TEMP/${{ matrix.template }}"
+          mkdir -p "$WORK"
+          cp -r "templates/src/${{ matrix.template }}/.devcontainer" "$WORK/"
+          python3 - "$WORK/.devcontainer/devcontainer.json" \
+                   "templates/src/${{ matrix.template }}/devcontainer-template.json" <<'PY'
+          import json, re, sys
+          dc_path, tmpl_path = sys.argv[1], sys.argv[2]
+          options = json.load(open(tmpl_path)).get("options", {})
+          text = open(dc_path).read()
+          for key, spec in options.items():
+              text = text.replace("${templateOption:" + key + "}", str(spec.get("default", "")))
+          # Fail loudly if any placeholder remains.
+          leftover = re.findall(r"\$\{templateOption:[^}]+\}", text)
+          if leftover:
+              sys.exit("unsubstituted template options: " + ", ".join(leftover))
+          open(dc_path, "w").write(text)
+          PY
+          echo "WORK=$WORK" >> "$GITHUB_ENV"
+
+      - name: "Build & start ${{ matrix.template }}"
+        run: devcontainer up --workspace-folder "$WORK"
+
+      - name: "Smoke test ${{ matrix.template }}"
+        run: |
+          devcontainer exec --workspace-folder "$WORK" bash -lc '
+            set -euo pipefail
+            node --version
+            codegraph --version
+            test -f /etc/profile.d/99-harden-sandbox.sh
+            if command -v claude >/dev/null; then claude --version; fi
+            if command -v codex  >/dev/null; then codex  --version; fi
+          '

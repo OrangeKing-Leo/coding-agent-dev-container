@@ -1,0 +1,21 @@
+{
+  "sourceInformation": {
+    "source": "github",
+    "owner": "OrangeKing-Leo",
+    "repo": "coding-agent-dev-container"
+  },
+  "templates": [
+    {
+      "id": "claude-code-sandbox",
+      "version": "1.0.0",
+      "name": "Claude Code Sandbox",
+      "description": "Hardened Debian dev container with Claude Code CLI, CodeGraph (wired to Claude Code), and frontend (Vue/React/Tailwind) VS Code extensions."
+    },
+    {
+      "id": "codex-sandbox",
+      "version": "1.0.0",
+      "name": "Codex Sandbox",
+      "description": "Hardened Debian dev container with OpenAI Codex CLI, CodeGraph (wired to Codex), and frontend (Vue/React/Tailwind) VS Code extensions."
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+# One marketplace source per line (URL, GitHub `owner/repo`, or local path).
+# Lines starting with `#` and blank lines are ignored.
+obra/superpowers-marketplace

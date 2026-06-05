@@ -1,0 +1,3 @@
+# One plugin per line, format `<plugin>@<marketplace>`.
+# Lines starting with `#` and blank lines are ignored.
+superpowers@superpowers-marketplace

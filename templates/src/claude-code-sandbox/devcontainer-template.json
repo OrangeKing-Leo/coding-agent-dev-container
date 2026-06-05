@@ -1,0 +1,30 @@
+{
+  "id": "claude-code-sandbox",
+  "version": "1.0.0",
+  "name": "Claude Code Sandbox",
+  "description": "Hardened Debian dev container with Claude Code CLI, CodeGraph (wired to Claude Code), and frontend (Vue/React/Tailwind) VS Code extensions.",
+  "documentationURL": "https://github.com/OrangeKing-Leo/coding-agent-dev-container/tree/main/templates/src/claude-code-sandbox",
+  "options": {
+    "nodeVersion": {
+      "type": "string",
+      "proposals": ["22", "20", "18"],
+      "default": "20",
+      "description": "Major Node.js version installed by the CLI features."
+    },
+    "claudeCodeVersion": {
+      "type": "string",
+      "proposals": ["latest"],
+      "default": "latest",
+      "description": "Version of @anthropic-ai/claude-code (npm dist-tag or semver)."
+    },
+    "codegraphVersion": {
+      "type": "string",
+      "proposals": ["latest"],
+      "default": "latest",
+      "description": "Version of @colbymchenry/codegraph (npm dist-tag or semver)."
+    }
+  },
+  "platforms": ["debian"],
+  "publisher": "OrangeKing-Leo",
+  "keywords": ["claude-code", "codegraph", "sandbox", "frontend", "vue", "react"]
+}

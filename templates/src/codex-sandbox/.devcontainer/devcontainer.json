@@ -1,0 +1,64 @@
+{
+  "name": "Codex Sandbox",
+  "image": "mcr.microsoft.com/devcontainers/base:debian",
+
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "configureZshAsDefaultShell": true,
+      "username": "vscode"
+    },
+    "ghcr.io/orangeking-leo/devcontainer-features/harden-sandbox:1": {
+      "unsetHostIpc": true,
+      "writeOnboardingFlag": false,
+      "addGitSafeDirectory": true,
+      "disableCoreDumps": true,
+      "persistShellHistory": true
+    },
+    "ghcr.io/orangeking-leo/devcontainer-features/codex:1": {
+      "version": "${templateOption:codexVersion}",
+      "installNode": true,
+      "nodeVersion": "${templateOption:nodeVersion}",
+      "installCxdAlias": true
+    },
+    "ghcr.io/orangeking-leo/devcontainer-features/codegraph:1": {
+      "version": "${templateOption:codegraphVersion}",
+      "installNode": true,
+      "nodeVersion": "${templateOption:nodeVersion}",
+      "installAliases": true
+    },
+    "ghcr.io/orangeking-leo/devcontainer-features/frontend-extensions:1": {}
+  },
+
+  "runArgs": [
+    "--cap-drop=ALL",
+    "--cap-add=CHOWN",
+    "--cap-add=DAC_OVERRIDE",
+    "--cap-add=FOWNER",
+    "--cap-add=SETUID",
+    "--cap-add=SETGID",
+    "--security-opt=no-new-privileges"
+  ],
+
+  "updateRemoteUserUID": true,
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+
+  "mounts": [
+    {
+      "source": "codex-config-${devcontainerId}",
+      "target": "/home/vscode/.codex",
+      "type": "volume"
+    },
+    {
+      "source": "codex-bashhistory-${devcontainerId}",
+      "target": "/commandhistory",
+      "type": "volume"
+    }
+  ],
+
+  "postCreateCommand": "bash ${containerWorkspaceFolder}/.devcontainer/seed/install.sh"
+}
