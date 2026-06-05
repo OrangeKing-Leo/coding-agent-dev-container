@@ -16,7 +16,7 @@ jobs:
           - claude-code-sandbox
           - codex-sandbox
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: "Install latest devcontainer CLI"
         run: npm install -g @devcontainers/cli
