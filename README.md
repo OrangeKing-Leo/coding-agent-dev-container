@@ -4,6 +4,7 @@ Dev Container **templates** for running coding agents in a hardened sandbox.
 
 Backed by the custom features at
 [OrangeKing-Leo/devcontainer-features](https://github.com/OrangeKing-Leo/devcontainer-features).
+Release history: see [CHANGELOG.md](CHANGELOG.md).
 
 ## Templates
 
@@ -100,3 +101,7 @@ You can also run the check manually at any time:
 
 The hook only inspects staged files, so it won't complain about
 unrelated working-tree edits.
+
+When you bump the version, also move the relevant entries in
+[CHANGELOG.md](CHANGELOG.md) from `[Unreleased]` into a new dated
+section.
