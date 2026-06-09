@@ -49,4 +49,30 @@ if [ -d "$SEED_DIR/prompts" ]; then
   cp -rn "$SEED_DIR/prompts/." "$CODEX_HOME/prompts/" 2>/dev/null || true
 fi
 
+# 4. Append missing lines from gitignore.append to project .gitignore.
+if [ -f "$SEED_DIR/gitignore.append" ]; then
+  WORKSPACE_ROOT="$(cd "$SEED_DIR/../.." && pwd)"
+  TARGET_GI="$WORKSPACE_ROOT/.gitignore"
+  HEADER="# Added by codex-sandbox dev container seed"
+  to_append=()
+  while IFS= read -r raw || [ -n "$raw" ]; do
+    line="$(printf '%s' "$raw" | sed -E 's/^[[:space:]]+//; s/[[:space:]]+$//')"
+    [ -z "$line" ] && continue
+    case "$line" in \#*) continue ;; esac
+    [ -f "$TARGET_GI" ] && grep -qxF "$line" "$TARGET_GI" && continue
+    to_append+=("$line")
+  done < "$SEED_DIR/gitignore.append"
+  if [ "${#to_append[@]}" -gt 0 ]; then
+    touch "$TARGET_GI"
+    if [ -s "$TARGET_GI" ] && [ -n "$(tail -c1 "$TARGET_GI")" ]; then
+      printf '\n' >> "$TARGET_GI"
+    fi
+    if ! grep -qxF "$HEADER" "$TARGET_GI"; then
+      printf '\n%s\n' "$HEADER" >> "$TARGET_GI"
+    fi
+    printf '%s\n' "${to_append[@]}" >> "$TARGET_GI"
+    echo "codex seed: appended ${#to_append[@]} line(s) to $TARGET_GI"
+  fi
+fi
+
 echo "codex seed: done"

@@ -1,0 +1,7 @@
+# Lines from this file are appended to the project's .gitignore on
+# container start if they aren't already present. Comments and blank
+# lines are ignored. Edit freely — re-running is idempotent.
+
+# Claude Code local, machine-specific state (never commit).
+.claude/settings.local.json
+.claude/.credentials.json

@@ -16,11 +16,17 @@ Both are based on `mcr.microsoft.com/devcontainers/base:debian` and ship
 with `cap-drop=ALL` + `no-new-privileges`, plus named-volume mounts for
 shell history and the agent's home directory.
 
+Each template includes a `.devcontainer/seed/` directory whose
+`install.sh` runs once on container creation. It seeds the agent's home
+config (`~/.claude` or `~/.codex`), and refreshes the project's
+`.gitignore` with agent-specific entries (e.g. local settings, auth
+files) — idempotent, only appends what's missing, never removes lines.
+See each template's README for the full seed layout.
+
 ## Apply a template locally
 
 ```bash
-npm i -g @devcontainers/cli
-devcontainer templates apply \
+npx -y @devcontainers/cli templates apply \
   --template-id ghcr.io/orangeking-leo/coding-agent-dev-container/claude-code-sandbox \
   --workspace-folder .
 ```
@@ -28,6 +34,26 @@ devcontainer templates apply \
 (Replace `claude-code-sandbox` with `codex-sandbox` for the Codex
 variant.) See each template's README for options, seed layout, and
 what's inside.
+
+## Apply via a coding agent
+
+Paste this prompt into Claude Code / Codex / Cursor / any agent with
+shell access, from the target project's root:
+
+> Set up the `claude-code-sandbox` dev container template from
+> `ghcr.io/orangeking-leo/coding-agent-dev-container` in this project.
+> Run `npx -y @devcontainers/cli templates apply --template-id
+> ghcr.io/orangeking-leo/coding-agent-dev-container/claude-code-sandbox
+> --workspace-folder .` in the project root, then show me the generated
+> `.devcontainer/` layout and summarize what the seed files
+> (`CLAUDE.md`, `mcp-servers.json`, `marketplaces.txt`, `plugins.txt`,
+> `commands/`, `agents/`, `skills/`, `gitignore.append`) will do on
+> first container start so I can customize them before reopening in
+> container.
+
+Swap `claude-code-sandbox` → `codex-sandbox` (and `CLAUDE.md` →
+`AGENTS.md`, `mcp-servers.json` → `mcp-servers.toml`) for the Codex
+variant.
 
 ## CI / Release
 

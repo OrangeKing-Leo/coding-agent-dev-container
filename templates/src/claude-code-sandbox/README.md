@@ -7,8 +7,7 @@ MCP server.
 ## Apply
 
 ```bash
-npm i -g @devcontainers/cli
-devcontainer templates apply \
+npx -y @devcontainers/cli templates apply \
   --template-id ghcr.io/orangeking-leo/coding-agent-dev-container/claude-code-sandbox \
   --workspace-folder .
 ```
@@ -60,6 +59,22 @@ idempotent — re-running never overwrites existing config.
 | `marketplaces.txt` | One marketplace per line; added via `claude plugin marketplace add`. |
 | `plugins.txt` | One `plugin@marketplace` per line; installed via `claude plugin install`. |
 | `commands/`, `agents/`, `skills/` | Copied per-file into `~/.claude/<dir>/`, skipping files that already exist. |
+| `gitignore.append` | Lines appended to the project's `.gitignore` (in `/workspace`) if not already present. |
 
 Edit these files in your project's `.devcontainer/seed/` after applying
 the template to customize what each new container starts with.
+
+### `gitignore.append` details
+
+Each non-empty, non-comment line is matched against the project's
+`/workspace/.gitignore` with exact-line equality (`grep -qxF`). Missing
+lines are appended under a one-time header
+`# Added by claude-code-sandbox dev container seed`. The script never
+removes or rewrites existing entries — safe to run on repos that
+already have a hand-tuned `.gitignore`. Default entries:
+
+- `.claude/settings.local.json` — per-machine permission overrides
+- `.claude/.credentials.json` — local auth token (must never be committed)
+
+Add your own project-specific lines (e.g. `.env.local`, build artifacts)
+to that file; they'll be applied on the next container create/rebuild.
