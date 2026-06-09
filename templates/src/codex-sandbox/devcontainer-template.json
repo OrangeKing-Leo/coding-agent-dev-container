@@ -1,6 +1,6 @@
 {
   "id": "codex-sandbox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Codex Sandbox",
   "description": "Hardened Debian dev container with OpenAI Codex CLI, CodeGraph (wired to Codex), and frontend (Vue/React/Tailwind) VS Code extensions.",
   "documentationURL": "https://github.com/OrangeKing-Leo/coding-agent-dev-container/tree/main/templates/src/codex-sandbox",

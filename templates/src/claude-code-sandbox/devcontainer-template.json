@@ -1,6 +1,6 @@
 {
   "id": "claude-code-sandbox",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "name": "Claude Code Sandbox",
   "description": "Hardened Debian dev container with Claude Code CLI, CodeGraph (wired to Claude Code), and frontend (Vue/React/Tailwind) VS Code extensions.",
   "documentationURL": "https://github.com/OrangeKing-Leo/coding-agent-dev-container/tree/main/templates/src/claude-code-sandbox",
