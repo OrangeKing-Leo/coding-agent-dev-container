@@ -7,6 +7,11 @@ both templates share a single version line so entries below apply to
 
 ## [Unreleased]
 
+### Added
+- `scripts/test-check-template-versions.sh` — 8-case test suite for
+  the version-bump check. Wired into `test.yaml` as a `check-scripts`
+  job that runs on every PR / `main` push.
+
 ## [1.1.0] — 2026-06-09
 
 ### Added

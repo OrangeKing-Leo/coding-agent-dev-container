@@ -7,6 +7,13 @@ on:
       - main
 
 jobs:
+  check-scripts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: "Test scripts/check-template-versions.sh"
+        run: bash scripts/test-check-template-versions.sh
+
   test:
     runs-on: ubuntu-latest
     strategy:
