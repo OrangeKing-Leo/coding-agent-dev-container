@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Pre-commit hook: enforce template version bump on publishable changes.
+# Enable for this repo with:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+exec "$(git rev-parse --show-toplevel)/scripts/check-template-versions.sh"

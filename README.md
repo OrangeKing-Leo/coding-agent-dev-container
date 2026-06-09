@@ -68,3 +68,35 @@ variant.
 After the first publish, set each GHCR package's visibility to
 **public** on github.com or anonymous `devcontainer templates apply`
 will 401.
+
+### Bumping template versions
+
+`devcontainers/action` publishes by version. If you change any
+publishable file in a template (anything under `templates/src/<id>/`
+except `README.md` / `NOTES.md`) **without** bumping `version` in
+`devcontainer-template.json`, the release workflow logs
+
+```
+(!) WARNING: Version X.Y.Z already exists, skipping X.Y.Z...
+```
+
+and the GHCR `:latest` tag keeps serving the old tarball — your changes
+silently never reach users.
+
+To avoid this, this repo ships a pre-commit hook that fails the commit
+if a template has staged changes but its version line in
+`devcontainer-template.json` wasn't also touched. Enable it once per
+clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+You can also run the check manually at any time:
+
+```bash
+./scripts/check-template-versions.sh
+```
+
+The hook only inspects staged files, so it won't complain about
+unrelated working-tree edits.
